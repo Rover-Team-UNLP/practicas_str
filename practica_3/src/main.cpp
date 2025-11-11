@@ -17,13 +17,17 @@
 typedef struct {
     const char *taskName;
     uint32_t delayMs;  
+    uint32_t initialDelayMs;
 } ParametrosTarea_t;
 
 void vTaskFunction(void *pvParameters)
 {
     ParametrosTarea_t *params = (ParametrosTarea_t *)pvParameters;
 
-    for (;;)
+    if (params->initialDelayMs > 0)
+        vTaskDelay(params->initialDelayMs / portTICK_PERIOD_MS);
+
+    while (1)
     {
         Serial.println(params->taskName);
         vTaskDelay(params->delayMs / portTICK_PERIOD_MS);
@@ -33,20 +37,20 @@ void vTaskFunction(void *pvParameters)
 
 //! ---- Ejercicio 1 ----
 
-void setup()
-{
-    Serial.begin(9600);
+// void setup()
+// {
+//     Serial.begin(9600);
 
-    static const ParametrosTarea_t paramsTask1 = {(char *)"Task 1 is running", 200};
-    static const ParametrosTarea_t paramsTask2 = {(char *)"Task 2 is running", 500};
-    static const ParametrosTarea_t paramsTask3 = {(char *)"Task 3 is running", 800};
+//     static const ParametrosTarea_t paramsTask1 = {(char *)"Task 1 is running", 200, 0};
+//     static const ParametrosTarea_t paramsTask2 = {(char *)"Task 2 is running", 500, 0};
+//     static const ParametrosTarea_t paramsTask3 = {(char *)"Task 3 is running", 800, 0};
     
-    xTaskCreate(vTaskFunction, "Tarea 1", 128, (void *)&paramsTask1, 1, NULL);
-    xTaskCreate(vTaskFunction, "Tarea 2", 128, (void *)&paramsTask2, 2, NULL);
-    xTaskCreate(vTaskFunction, "Tarea 3", 128, (void *)&paramsTask3, 3, NULL);
+//     xTaskCreate(vTaskFunction, "Tarea 1", 128, (void *)&paramsTask1, 1, NULL);
+//     xTaskCreate(vTaskFunction, "Tarea 2", 128, (void *)&paramsTask2, 2, NULL);
+//     xTaskCreate(vTaskFunction, "Tarea 3", 128, (void *)&paramsTask3, 3, NULL);
     
-    vTaskStartScheduler();
-}
+//     vTaskStartScheduler();
+// }
 
 
 //! ---- Ejercicio 4, A. ----
@@ -55,9 +59,9 @@ void setup()
 // void setup()
 // {
 //     Serial.begin(9600);
-//     static const ParametrosTarea_t paramsTask1 = {(char *)"Tarea 1", 1000};
-//     static const ParametrosTarea_t paramsTask2 = {(char *)"Tarea 2", 1010};
-//     static const ParametrosTarea_t paramsTask3 = {(char *)"Tarea 3", 1005};
+//     static const ParametrosTarea_t paramsTask1 = {(char *)"Tarea 1", 1000, 0};
+//     static const ParametrosTarea_t paramsTask2 = {(char *)"Tarea 2", 1000, 20};
+//     static const ParametrosTarea_t paramsTask3 = {(char *)"Tarea 3", 1000, 10};
 
 //     xTaskCreate(vTaskFunction, "Tarea 1", 128, (void *)&paramsTask1, 1, NULL);
 //     xTaskCreate(vTaskFunction, "Tarea 2", 128, (void *)&paramsTask2, 1, NULL);
@@ -71,9 +75,9 @@ void setup()
 // void setup()
 // {
 //     Serial.begin(9600);
-//     static const ParametrosTarea_t paramsTask1 = {(char *)"Tarea 1", 4040};
-//     static const ParametrosTarea_t paramsTask2 = {(char *)"Tarea 2", 2000};
-//     static const ParametrosTarea_t paramsTask3 = {(char *)"Tarea 3", 4020};
+//     static const ParametrosTarea_t paramsTask1 = {(char *)"Tarea 1", 2000, 20};
+//     static const ParametrosTarea_t paramsTask2 = {(char *)"Tarea 2", 1000, 0};
+//     static const ParametrosTarea_t paramsTask3 = {(char *)"Tarea 3", 2000, 10};
 
 //     xTaskCreate(vTaskFunction, "Tarea 1", 128, (void *)&paramsTask1, 1, NULL);
 //     xTaskCreate(vTaskFunction, "Tarea 2", 128, (void *)&paramsTask2, 1, NULL);
@@ -84,19 +88,19 @@ void setup()
 
 //! ---- Ejercicio 4, C. ----
 
-// void setup()
-// {
-//     Serial.begin(9600);
-//     static const ParametrosTarea_t paramsTask1 = {(char *)"Tarea 1", 3050};
-//     static const ParametrosTarea_t paramsTask2 = {(char *)"Tarea 2", 3100};
-//     static const ParametrosTarea_t paramsTask3 = {(char *)"Tarea 3", 1000};
+void setup()
+{
+    Serial.begin(9600);
+    static const ParametrosTarea_t paramsTask1 = {(char *)"Tarea 1", 3000, 10};
+    static const ParametrosTarea_t paramsTask2 = {(char *)"Tarea 2", 3000, 20};
+    static const ParametrosTarea_t paramsTask3 = {(char *)"Tarea 3", 1000};
 
-//     xTaskCreate(vTaskFunction, "Tarea 1", 128, (void *)&paramsTask1, 1, NULL);
-//     xTaskCreate(vTaskFunction, "Tarea 2", 128, (void *)&paramsTask2, 1, NULL);
-//     xTaskCreate(vTaskFunction, "Tarea 3", 128, (void *)&paramsTask3, 1, NULL);
+    xTaskCreate(vTaskFunction, "Tarea 1", 128, (void *)&paramsTask1, 1, NULL);
+    xTaskCreate(vTaskFunction, "Tarea 2", 128, (void *)&paramsTask2, 1, NULL);
+    xTaskCreate(vTaskFunction, "Tarea 3", 128, (void *)&paramsTask3, 1, NULL);
     
-//     vTaskStartScheduler();
-// }
+    vTaskStartScheduler();
+}
 
 void loop()
 {
