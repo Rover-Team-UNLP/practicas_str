@@ -19,6 +19,8 @@ SharedData shared_data = {
     .pipe_fd = -1,
     .sensor_done = 0};
 
+//! Hacerlo con dos sensores
+
 void *thread_baja_prio(void *arg)
 {
     SharedData *data = (SharedData *)arg;

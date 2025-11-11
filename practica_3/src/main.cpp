@@ -20,6 +20,8 @@ typedef struct {
     uint32_t initialDelayMs;
 } ParametrosTarea_t;
 
+
+//! Hacerlo con semaforos
 void vTaskFunction(void *pvParameters)
 {
     ParametrosTarea_t *params = (ParametrosTarea_t *)pvParameters;
@@ -93,7 +95,7 @@ void setup()
     Serial.begin(9600);
     static const ParametrosTarea_t paramsTask1 = {(char *)"Tarea 1", 3000, 10};
     static const ParametrosTarea_t paramsTask2 = {(char *)"Tarea 2", 3000, 20};
-    static const ParametrosTarea_t paramsTask3 = {(char *)"Tarea 3", 1000};
+    static const ParametrosTarea_t paramsTask3 = {(char *)"Tarea 3", 1000, 0};
 
     xTaskCreate(vTaskFunction, "Tarea 1", 128, (void *)&paramsTask1, 1, NULL);
     xTaskCreate(vTaskFunction, "Tarea 2", 128, (void *)&paramsTask2, 1, NULL);
